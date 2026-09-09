@@ -3,64 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2D Cartoon Music World</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
+    <title>Tiny Orb - Journey of Seasons</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-theme="day">
-    <div id="dark-mode-btn" aria-label="Toggle dark mode" role="button" tabindex="0"></div>
-
-    <div class="scene">
-        <div class="layer sky" aria-hidden="true"></div>
-        <div class="layer celestial" aria-hidden="true">
-            <div id="sun"></div>
-            <div id="moon"></div>
-        </div>
-        <div class="layer clouds" id="clouds" aria-hidden="true"></div>
-        <div class="layer mountains far" aria-hidden="true"></div>
-        <div class="layer mountains mid" aria-hidden="true"></div>
-        <div class="layer mountains close" aria-hidden="true"></div>
-        <div class="layer ground" aria-hidden="true">
-            <div class="road"></div>
-        </div>
-        <div class="layer flora" id="flora" aria-hidden="true"></div>
-        
-        <div class="layer fauna day-fauna" id="birds" aria-hidden="true"></div>
-        <div class="layer fauna day-fauna" id="butterflies" aria-hidden="true"></div>
-        <div class="layer fauna night-fauna" id="fireflies" aria-hidden="true"></div>
-        <div class="layer notes" id="notes-container" aria-hidden="true"></div>
-
-        <div class="layer music-man-wrapper">
-            <div id="music-man-container"></div>
-            <p id="fetch-error-msg" class="error-msg">Please run via HTTP Server.</p>
-        </div>
-
-        <main class="layer player-wrapper">
-            <div class="music-player">
-                <div class="player-top">
-                    <img id="cover" src="./img/Screenshot%202026-09-05%20010729.png" alt="Album Cover">
-                    <div class="song-info">
-                        <h2 id="title">Song Title</h2>
-                        <h3 id="artist">Artist</h3>
-                        <div class="time-info">
-                            <span id="currTime">0:00</span> / <span id="durTime">0:00</span>
-                        </div>
-                        <div class="controls">
-                            <button id="prev" aria-label="Previous song"><i class="fas fa-backward-step"></i></button>
-                            <button id="play" aria-label="Play/Pause" class="play-btn"><i class="fas fa-play"></i></button>
-                            <button id="next" aria-label="Next song"><i class="fas fa-forward-step"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="progress-container" id="progress-container" aria-label="Seek progress">
-                    <div class="progress" id="progress"></div>
-                </div>
-            </div>
-        </main>
+<body>
+    <!-- Protocol Warning Banner -->
+    <div id="fileProtocolWarning" class="warning-banner hidden">
+        ⚠️ Audio playback may be restricted when running directly via file:// protocol. Please open using a local server (e.g., VS Code Live Server).
     </div>
 
-    <audio id="audio" src=""></audio>
-    <script src="./js/script.js"></script>
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Start Screen Overlay -->
+    <div id="startScreen" class="overlay active">
+        <h1>Tiny Orb</h1>
+        <p>Tap or Click to fly. Avoid obstacles and don't hit the ground!</p>
+        <button id="startBtn">Start Journey</button>
+    </div>
+
+    <!-- Game Over Screen Overlay -->
+    <div id="gameOverScreen" class="overlay">
+        <h1>Game Over</h1>
+        <p>You survived for <span id="finalScore">0</span> Days</p>
+        <button id="restartBtn">Restart Journey</button>
+    </div>
+
+    <!-- In-Game HUD -->
+    <div id="hud">
+        <div class="hud-left">
+            <h2><span id="scoreDisplay">0</span> Days</h2>
+        </div>
+        <div class="hud-right">
+            <h3 id="seasonDisplay">Spring</h3>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
