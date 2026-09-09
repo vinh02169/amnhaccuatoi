@@ -1,108 +1,134 @@
-:root {
-    --sky-top: #6db3f2;
-    --sky-bot: #d7f0f7;
-    --mount-far: #9dc4db;
-    --mount-mid: #79a8c9;
-    --mount-close: #5c9985;
-    --ground: #71b86d;
-    --road: #e0cca7;
-    --sun-moon-y: 10%;
-    
-    --player-bg: rgba(255, 255, 255, 0.85);
-    --text-main: #2d3436;
-    --text-sec: #636e72;
-    --accent: #ff9f43;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-[data-theme="night"] {
-    --sky-top: #0a0e27;
-    --sky-bot: #1a2542;
-    --mount-far: #12192e;
-    --mount-mid: #0d1a29;
-    --mount-close: #08121a;
-    --ground: #0a1714;
-    --road: #14161a;
-    
-    --player-bg: rgba(20, 24, 39, 0.85);
-    --text-main: #f1f2f6;
-    --text-sec: #a4b0be;
-    --accent: #feca57;
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #111;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+    touch-action: none;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { width: 100vw; height: 100dvh; overflow: hidden; background: var(--sky-bot); }
-
-.scene { position: relative; width: 100%; height: 100%; background: linear-gradient(to bottom, var(--sky-top) 0%, var(--sky-bot) 60%); transition: background 1.5s ease; }
-.layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-
-/* Celestial */
-.celestial { z-index: 1; }
-#sun, #moon { position: absolute; width: clamp(60px, 8vw, 100px); height: clamp(60px, 8vw, 100px); border-radius: 50%; left: 30%; transition: all 1.5s ease; }
-#sun { background: #ffeb3b; top: var(--sun-moon-y); box-shadow: 0 0 40px #ffeb3b; }
-#moon { background: transparent; top: calc(var(--sun-moon-y) + 20%); box-shadow: inset -15px -15px 0 #f5f6fa, 0 0 20px rgba(255,255,255,0.2); opacity: 0; }
-[data-theme="night"] #sun { opacity: 0; transform: translateY(50px); }
-[data-theme="night"] #moon { opacity: 1; top: var(--sun-moon-y); transform: translateY(0); }
-
-/* Landscapes */
-.mountains, .ground { transition: background 1.5s ease; }
-.mountains.far { z-index: 2; top: 40%; height: 60%; background: var(--mount-far); clip-path: polygon(0 40%, 25% 10%, 50% 35%, 80% 5%, 100% 30%, 100% 100%, 0 100%); }
-.mountains.mid { z-index: 3; top: 50%; height: 50%; background: var(--mount-mid); clip-path: polygon(0 30%, 30% 0, 70% 30%, 100% 10%, 100% 100%, 0 100%); }
-.mountains.close { z-index: 4; top: 60%; height: 40%; background: var(--mount-close); clip-path: ellipse(120% 100% at 50% 100%); }
-.ground { z-index: 5; top: 75%; height: 25%; background: var(--ground); }
-.road { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 100%; background: var(--road); clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); transition: background 1.5s ease; }
-
-/* Flora & Fauna */
-.flora { z-index: 6; display: flex; flex-wrap: wrap; }
-.tree, .grass, .flower { position: absolute; bottom: 0; transform-origin: bottom center; }
-.tree svg { width: 100%; height: 100%; transition: fill 1.5s ease; }
-.day-fauna, .night-fauna { transition: opacity 1.5s ease; z-index: 7; }
-[data-theme="night"] .day-fauna { opacity: 0; }
-[data-theme="day"] .night-fauna { opacity: 0; }
-
-.bird { position: absolute; fill: #555; animation: fly linear infinite; }
-.bird-wing { animation: flap 0.3s alternate infinite ease-in-out; transform-origin: center; }
-.butterfly { position: absolute; animation: flutter linear infinite; }
-.bf-wing { fill: #ff9f43; animation: flap 0.15s alternate infinite; transform-origin: center; }
-.firefly { position: absolute; width: 4px; height: 4px; background: #e0ff4f; border-radius: 50%; box-shadow: 0 0 8px 3px rgba(224,255,79,0.6); animation: floatFirefly ease-in-out infinite alternate; }
-.music-note { position: absolute; color: var(--text-main); font-size: 1.5rem; opacity: 0; animation: floatUp 2.5s ease-out forwards; z-index: 8; }
-
-/* Interactive */
-#dark-mode-btn { position: absolute; top: 24px; left: 24px; width: 48px; height: 48px; z-index: 20; cursor: pointer; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); pointer-events: auto; }
-.music-man-wrapper { z-index: 9; display: flex; align-items: center; justify-content: center; top: 38%; }
-#music-man-container { width: clamp(120px, 20vw, 180px); }
-.error-msg { display: none; color: #ff4757; font-weight: bold; text-align: center; background: rgba(0,0,0,0.7); padding: 8px; border-radius: 8px; }
-
-/* Player */
-.player-wrapper { z-index: 10; pointer-events: auto; display: flex; justify-content: center; align-items: flex-start; top: 46%; }
-.music-player { background: var(--player-bg); border: 2px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 24px; padding: clamp(12px, 2vw, 20px); width: clamp(300px, 90vw, 520px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: background 1.5s, color 1.5s; color: var(--text-main); display: flex; flex-direction: column; gap: 12px; }
-.player-top { display: flex; gap: 16px; align-items: center; }
-#cover { width: clamp(90px, 18vw, 130px); height: clamp(90px, 18vw, 130px); border-radius: 16px; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-.song-info { flex: 1; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-.song-info h2 { font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.song-info h3 { font-size: clamp(0.8rem, 2vw, 0.95rem); color: var(--text-sec); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.time-info { font-size: 0.8rem; font-weight: 600; font-family: monospace; }
-.controls { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
-.controls button { background: none; border: none; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: transform 0.2s; }
-.controls button:hover { transform: scale(1.1); }
-.controls .play-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-.progress-container { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; cursor: pointer; }
-.progress { height: 100%; width: 0%; background: var(--accent); border-radius: 4px; transition: width 0.1s linear; }
-[data-theme="night"] .progress-container { background: rgba(255,255,255,0.1); }
-
-/* Keyframes */
-@keyframes fly { from { transform: translate(-10vw, var(--y-start)) scale(var(--s)); } to { transform: translate(110vw, var(--y-end)) scale(var(--s)); } }
-@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(-0.5); } }
-@keyframes flutter { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(20px, -15px) rotate(10deg); } 50% { transform: translate(40px, 0) rotate(-5deg); } 75% { transform: translate(60px, -20px) rotate(15deg); } 100% { transform: translate(80px, -5px) rotate(0deg); } }
-@keyframes floatFirefly { from { transform: translateY(0) scale(0.8); opacity: 0.4; } to { transform: translateY(-20px) scale(1.2); opacity: 1; } }
-@keyframes floatUp { 0% { transform: translate(0,0) scale(0.5); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(var(--dx), -100px) scale(1.2); opacity: 0; } }
-
-/* Media Queries */
-@media (max-height: 600px), (max-width: 480px) {
-    .player-wrapper { top: 50%; }
-    .music-man-wrapper { top: 35%; }
-    #music-man-container { width: clamp(80px, 15vw, 120px); }
-    #dark-mode-btn { top: 12px; left: 12px; width: 40px; height: 40px; }
+/* Protocol warning banner */
+.warning-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #ff9800;
+    color: #111;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    transition: opacity 0.3s ease;
 }
-@media (prefers-reduced-motion: reduce) {
-    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+
+.warning-banner.hidden {
+    display: none;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Menu Overlays */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.overlay h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 15px rgba(255, 255, 255, 0.5);
+    letter-spacing: 2px;
+}
+
+.overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #f1f2f6;
+    max-width: 80%;
+}
+
+button {
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    background: #fff59d;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(255, 245, 157, 0.4);
+    transition: transform 0.1s, background 0.2s;
+}
+
+button:hover {
+    background: #fff9c4;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* In-game HUD */
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    z-index: 5;
+    display: none;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
+.hud-left h2 {
+    color: white;
+    font-size: 2rem;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+}
+
+.hud-right h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    font-weight: 500;
 }
